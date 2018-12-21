@@ -94,9 +94,9 @@ Hypestep
   ### Don't touch the variables below here ###
   CONF=$INSTALLER/custom/etc/sysconfig
   PERM=$INSTALLER/custom/etc/permissions
-  if [ -d /product/overlay ]; then
-    STEPDIR=/product/overlay
-    ALTDIR=/product/overlay
+  if [ -d /system/product/overlay ]; then
+    STEPDIR=$INSTALLER/system/product/overlay
+    ALTDIR=/system/product/overlay
   else
     STEPDIR=$INSTALLER$VEN/overlay
     ALTDIR=$VEN/overlay
@@ -126,7 +126,9 @@ Hypestep
     abort
   }
 
-  if [ $STEPDIR == "/product/overlay" ]; then mount -o remount,rw /product || product_abort; fi
+  if echo $STEPDIR | grep "/product/overlay" &>/dev/null && [ ! -L "/product" ]; then
+      mount -o remount,rw /product || product_abort
+  fi
 }
 
 # Custom Functions for Install AND Uninstall - You can put them here
